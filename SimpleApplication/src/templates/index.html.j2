@@ -1,0 +1,72 @@
+{% extends "_base.html.j2" %}
+{% block content %}
+
+
+<form action="javascript:void(0);" onsubmit="return createnewItem();">
+    <fieldset>
+        <legend>Create Item:</legend>
+        <label for="newItemName">Name:</label>
+        <input required type="text" id="newItemName" name="newItemName"><br><br>
+        <label for="newItemDescription">Description:</label>
+        <textarea required type="text" id="newItemDescription" name="newItemDescription"></textarea><br><br>
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+            <option value="Signed-out">Signed-out</option>
+            <option value="In-Inventory">Signed-In</option>
+            <option value="In-Transit">In-Transit</option>
+        </select>
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+
+<script>
+    const createnewItem = () => {
+        let name = document.getElementById("newItemName")
+        let desc = document.getElementById("newItemDescription")
+        let st = document.getElementById("status")
+        fetch(`{{url_for('item_create')}}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name.value,
+                description: desc.value,
+                status: st.value
+            })
+        }).then(response => {
+            if (!response.ok) {
+                alert("Error creating item")
+                return
+            }
+            alert("Created");
+            window.location = "/";
+        })
+    }
+</script>
+<hr />
+{% if items !=[] %}
+<table border>
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Description</td>
+        <td>Status</td>
+        <td>action</td>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.description}}</td>
+        <td>{{item.status}}</td>
+        <td>
+            <button onclick="window.location = `/item/{{item.id}}`">Edit</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{%else%}
+<p>No Item in Inventory</p>
+{% endif %}
+{% endblock %}
