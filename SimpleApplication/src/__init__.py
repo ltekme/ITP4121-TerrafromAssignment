@@ -36,7 +36,7 @@ def checkBurner():
         Item.name.startswith("BurnerMaterial")
     ).count()
     requiredBurningMaterial = itemsCount - burnerMaterialCount
-    print(
+    app.logger.debug(
         f"Items in inventory: {itemsCount}, item in burner: {burnerMaterialCount}")
 
     if requiredBurningMaterial > 0:
