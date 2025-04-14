@@ -1,5 +1,53 @@
-{% extends "_base.html.j2" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+
+    <style>
+        body {
+            max-width: 700px;
+        }
+
+        fieldset {
+            background-color: #eeeeee;
+        }
+
+        legend {
+            background-color: gray;
+            color: white;
+            padding: 5px 10px;
+        }
+
+        input {
+            margin: 5px;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1>Inventory</h1>
+    
 
 
 <form action="javascript:void(0);" onsubmit="return createnewItem();">
@@ -24,7 +72,7 @@
         let name = document.getElementById("newItemName")
         let desc = document.getElementById("newItemDescription")
         let st = document.getElementById("status")
-        fetch(`{{url_for('item_CR')}}`, {
+        fetch(`/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -40,33 +88,15 @@
                 return
             }
             alert("Created");
-            window.location = "{{url_for('item_CR')}}";
+            window.location = "/";
         })
     }
 </script>
 <hr />
-{% if items !=[] %}
-<table border>
-    <tr>
-        <td>Id</td>
-        <td>Name</td>
-        <td>Description</td>
-        <td>Status</td>
-        <td>action</td>
-    </tr>
-    {% for item in items %}
-    <tr>
-        <td>{{item.id}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.description}}</td>
-        <td>{{item.status}}</td>
-        <td>
-            <button onclick="window.location = `{{url_for('item_RUD', id=item.id)}}`">Edit</button>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-{%else%}
+
 <p>No Item in Inventory</p>
-{% endif %}
-{% endblock %}
+
+
+</body>
+
+</html>

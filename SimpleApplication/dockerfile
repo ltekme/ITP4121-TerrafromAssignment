@@ -1,0 +1,19 @@
+FROM python:3-alpine@sha256:18159b2be11db91f84b8f8f655cd860f805dbd9e49a583ddaac8ab39bf4fe1a7
+
+ARG APP_DB_URL='sqlite:///./app.db'
+ARG APP_MAX_BURN_MATERIAL='10'
+
+ENV APP_DEBUG ${APP_DEBUG}
+ENV APP_DB_URL ${APP_DB_URL}
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY src ./src
+COPY app.py ./app.py
+
+EXPOSE 3000
+
+ENTRYPOINT [ "python", "./app.py" ]
