@@ -18,9 +18,11 @@ provider "aws" {
 
 
 module "aws-eks-cluster" {
-  count           = var.deploy-aws ? 1 : 0
-  source          = "./AWS-EKS-Cluster"
-  aws-region      = "us-east-1"
-  resource-prefix = var.project-name
+  count                 = var.deploy-aws ? 1 : 0
+  source                = "./AWS-EKS-Cluster"
+  aws-region            = "us-east-1"
+  resource-prefix       = var.project-name
+  cluster-role-arn      = var.aws-eks-cluster-role-arn
+  cluster-node-role-arn = var.aws-eks-cluster-node-role-arn
 }
 

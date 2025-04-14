@@ -8,6 +8,16 @@ variable "aws-region" {
   type        = string
 }
 
+variable "aws-eks-cluster-role-arn" {
+  description = "The role this aws eks use"
+  type        = string
+}
+
+variable "aws-eks-cluster-node-role-arn" {
+  description = "The role this aws eks use for workers"
+  type        = string
+}
+
 variable "deploy-aws" {
   description = "Weather to deploy infrasecture in aws"
   type        = bool

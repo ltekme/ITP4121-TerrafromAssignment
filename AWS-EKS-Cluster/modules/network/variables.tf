@@ -1,7 +1,3 @@
-/*########################################################
-Default Variables
-
-########################################################*/
 variable "resource-prefix" {
   description = "The prefix for resources"
   type        = string
