@@ -1,4 +1,5 @@
 import os
+
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
@@ -6,9 +7,9 @@ from http import HTTPMethod, HTTPStatus
 from flask import Flask, render_template, request, Response, redirect
 
 from .model import TableBase, Item
+from .bgBurner import materialsInBurner, addMaterialsToBurner, removeMaterialsFromBurner
 
 app = Flask(__name__)
-
 
 dbUri = os.environ.get("APP_DB_URL") or "sqlite:///./app.db"
 dbEngine = sa.create_engine(
@@ -18,11 +19,32 @@ dbEngine = sa.create_engine(
     })
 dbSession = so.Session(dbEngine)
 
-
 try:
     dbSession.query(Item).first()
 except:
     TableBase.metadata.create_all(dbEngine)
+
+
+@app.before_request
+def checkBurner():
+    burnerMaterialCount = len(materialsInBurner)
+    if burnerMaterialCount >= int(os.environ.get("APP_MAX_BURN_MATERIAL", 10)):
+        return
+    itemsCount = dbSession.query(Item).where(
+        Item.status == "In-Inventory"
+    ).filter(
+        Item.name.startswith("BurnerMaterial")
+    ).count()
+    requiredBurningMaterial = itemsCount - burnerMaterialCount
+    print(
+        f"Items in inventory: {itemsCount}, item in burner: {burnerMaterialCount}")
+
+    if requiredBurningMaterial > 0:
+        addMaterialsToBurner(requiredBurningMaterial)
+    if requiredBurningMaterial < 0:
+        removeMaterialsFromBurner(-requiredBurningMaterial)
+
+    return
 
 
 @app.route("/", methods=[HTTPMethod.POST, HTTPMethod.GET])
