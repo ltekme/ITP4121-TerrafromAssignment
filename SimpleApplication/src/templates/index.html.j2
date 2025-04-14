@@ -24,7 +24,7 @@
         let name = document.getElementById("newItemName")
         let desc = document.getElementById("newItemDescription")
         let st = document.getElementById("status")
-        fetch(`{{url_for('item_create')}}`, {
+        fetch(`{{url_for('item_CR')}}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -40,7 +40,7 @@
                 return
             }
             alert("Created");
-            window.location = "/";
+            window.location = "{{url_for('item_CR')}}";
         })
     }
 </script>
@@ -61,7 +61,7 @@
         <td>{{item.description}}</td>
         <td>{{item.status}}</td>
         <td>
-            <button onclick="window.location = `/item/{{item.id}}`">Edit</button>
+            <button onclick="window.location = `{{url_for('item_RUD', id=item.id)}}`">Edit</button>
         </td>
     </tr>
     {% endfor %}

@@ -10,8 +10,12 @@ from .model import TableBase, Item
 app = Flask(__name__)
 
 
-dbUri = os.environ.get("APP_DB_URL", "sqlite:///./app.db")
-dbEngine = sa.create_engine(url=dbUri, connect_args={'check_same_thread': False})
+dbUri = os.environ.get("APP_DB_URL") or "sqlite:///./app.db"
+dbEngine = sa.create_engine(
+    url=dbUri,
+    connect_args={
+        'check_same_thread': False
+    })
 dbSession = so.Session(dbEngine)
 
 
@@ -21,13 +25,23 @@ except:
     TableBase.metadata.create_all(dbEngine)
 
 
-@app.route("/")
-def index():
-    items = dbSession.query(Item).all()
-    return render_template("index.html.j2", items=items)
+@app.route("/", methods=[HTTPMethod.POST, HTTPMethod.GET])
+def item_CR():
+    if request.method == HTTPMethod.GET:
+        items = dbSession.query(Item).all()
+        return render_template("index.html.j2", items=items)
+
+    requestData = request.get_json() or {}
+    item = Item()
+    item.name = requestData.get("name")
+    item.description = requestData.get("description")
+    item.status = requestData.get("status")
+    dbSession.add(item)
+    dbSession.commit()
+    return Response(status=HTTPStatus.OK, response="ok")
 
 
-@app.route("/item/<id>", methods=[HTTPMethod.PUT, HTTPMethod.GET, HTTPMethod.DELETE])
+@app.route("/<id>", methods=[HTTPMethod.PUT, HTTPMethod.GET, HTTPMethod.DELETE])
 def item_RUD(id: int):
     item: Item = dbSession.query(Item).get(id)
     if item is None and request.method == HTTPMethod.GET:
@@ -45,17 +59,5 @@ def item_RUD(id: int):
     item.name = requestData.get("name")
     item.description = requestData.get("description")
     item.status = requestData.get("status")
-    dbSession.commit()
-    return Response(status=HTTPStatus.OK, response="ok")
-
-
-@app.route("/item/create", methods=[HTTPMethod.POST])
-def item_create():
-    requestData = request.get_json() or {}
-    item = Item()
-    item.name = requestData.get("name")
-    item.description = requestData.get("description")
-    item.status = requestData.get("status")
-    dbSession.add(item)
     dbSession.commit()
     return Response(status=HTTPStatus.OK, response="ok")
