@@ -1,8 +1,3 @@
-variable "aws-region" {
-  description = "AWS Region code to deploy the resources in"
-  type        = string
-}
-
 variable "name" {
   description = "The EKS Cluster Name"
   type        = string
