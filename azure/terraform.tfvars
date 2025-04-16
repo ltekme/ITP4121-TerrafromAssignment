@@ -1,0 +1,5 @@
+SUB_ID = ""
+keyvault_name = "mykeyvault4121ss"
+rgname = "myresourcegroup"
+location = "canadacentral"
+service_principal_name = "myserviceprincipal"
