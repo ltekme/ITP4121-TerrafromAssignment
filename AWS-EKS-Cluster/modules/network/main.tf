@@ -130,8 +130,8 @@ resource "aws_route_table" "private-AZ_A-Route_Table" {
   vpc_id = aws_vpc.Main-VPC.id
 
   route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.private-AZ_A.id
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.private-AZ_A.id
   }
 
   tags = {
@@ -144,8 +144,8 @@ resource "aws_route_table" "private-AZ_B-Route_Table" {
   vpc_id = aws_vpc.Main-VPC.id
 
   route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.private-AZ_B.id
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.private-AZ_B.id
   }
 
   tags = {

@@ -1,4 +1,4 @@
-variable "project-name" {
+variable "aws-project-name" {
   description = "The name of the project(can only contain letters, numbers, and hyphens)"
   type        = string
 }
@@ -18,7 +18,7 @@ variable "aws-eks-cluster-node-role-arn" {
   type        = string
 }
 
-variable "deploy-aws" {
-  description = "Weather to deploy infrasecture in aws"
-  type        = bool
+variable "aws-eks-cluster-access-role-arn" {
+  description = "The role used to access this cluster"
+  type        = string
 }

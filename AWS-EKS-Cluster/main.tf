@@ -1,3 +1,13 @@
+provider "aws" {
+  default_tags {
+    tags = {
+      Created_by = "Terrafrom"
+      Project    = var.resource-prefix
+    }
+  }
+  region = var.aws-region
+}
+
 module "network" {
   source           = "./modules/network"
   resource-prefix  = var.resource-prefix
@@ -19,17 +29,19 @@ module "eks-cluster" {
     module.network.private-subnet-2.id,
   ]
 
-  role-arn      = var.cluster-role-arn
-  node-role-arn = var.cluster-node-role-arn
-
+  role-arn                = var.eks-cluster-role-arn
+  node-role-arn           = var.eks-cluster-node-role-arn
+  cluster-access-role-arn = var.eks-cluster-access-role-arn
 }
 
 module "database" {
   source        = "./modules/database"
   database-name = var.resource-prefix
 
-  master-username = "admin"
-  master-password = "admin"
+  master-username = local.rds-master-username
+  master-password = local.rds-master-password
+
+  availability_zone = "${var.aws-region}a"
 
   vpc-id = module.network.vpc.id
   subnets = [

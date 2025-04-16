@@ -8,12 +8,17 @@ variable "aws-region" {
   type        = string
 }
 
-variable "cluster-role-arn" {
+variable "eks-cluster-role-arn" {
   description = "The role this cluster use"
   type        = string
 }
 
-variable "cluster-node-role-arn" {
+variable "eks-cluster-node-role-arn" {
   description = "The role this cluster use for workers"
+  type        = string
+}
+
+variable "eks-cluster-access-role-arn" {
+  description = "The role used to access this cluster"
   type        = string
 }
