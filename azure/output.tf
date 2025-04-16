@@ -11,5 +11,4 @@ output "client_secret" {
   description = "Password for service principal."
   value       = module.ServicePrincipal.client_secret
   sensitive = true
-
 }

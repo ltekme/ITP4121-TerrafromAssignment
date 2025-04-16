@@ -1,4 +1,4 @@
-SUB_ID = ""
+SUB_ID = "2e91053a-a916-4289-84a2-c72b9716812e"
 keyvault_name = "mykeyvault4121ss"
 rgname = "myresourcegroup"
 location = "canadacentral"
