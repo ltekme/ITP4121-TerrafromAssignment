@@ -2,3 +2,4 @@ sqlalchemy
 flask
 numpy
 waitress
+psycopg2-binary

@@ -29,8 +29,6 @@ module "eks-cluster" {
     module.network.private-subnet-2.id,
   ]
 
-  role-arn                = var.eks-cluster-role-arn
-  node-role-arn           = var.eks-cluster-node-role-arn
   cluster-access-role-arn = var.eks-cluster-access-role-arn
 }
 
@@ -50,4 +48,8 @@ module "database" {
   ]
 
   sg-ingress-blocks = ["0.0.0.0/0"]
+}
+
+resource "aws_ecr_repository" "simple-app" {
+  name = "${var.resource-prefix}-simple-app"
 }

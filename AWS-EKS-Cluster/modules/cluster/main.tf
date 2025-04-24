@@ -1,3 +1,6 @@
+module "cluster-roles" {
+  source = "./iam"
+}
 
 resource "aws_eks_cluster" "main" {
   name = var.name
@@ -5,7 +8,7 @@ resource "aws_eks_cluster" "main" {
     authentication_mode = "API"
   }
 
-  role_arn = var.role-arn
+  role_arn = module.cluster-roles.cluster-role.arn
   version  = "1.32"
 
   vpc_config {
@@ -18,7 +21,7 @@ resource "aws_eks_node_group" "main-grp" {
   cluster_name = aws_eks_cluster.main.name
 
   node_group_name = "${aws_eks_cluster.main.name}-1"
-  node_role_arn   = var.node-role-arn
+  node_role_arn   = module.cluster-roles.cluster-node-role.arn
   subnet_ids      = var.node-subnet-ids
 
   capacity_type = "SPOT"
@@ -51,28 +54,28 @@ used to access, best practice is to have sepreate role for
 each purpose, however, this is learner lab with restrictions.
 
 ########################################################*/
-# resource "aws_eks_access_entry" "this" {
-#   cluster_name  = aws_eks_cluster.main.name
-#   principal_arn = var.cluster-access-role-arn
-#   type          = "STANDARD"
-# }
+resource "aws_eks_access_entry" "this" {
+  cluster_name  = aws_eks_cluster.main.name
+  principal_arn = var.cluster-access-role-arn
+  type          = "STANDARD"
+}
 
-# resource "aws_eks_access_policy_association" "pa-admin" {
-#   cluster_name  = aws_eks_cluster.main.name
-#   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
-#   principal_arn = var.cluster-access-role-arn
+resource "aws_eks_access_policy_association" "pa-admin" {
+  cluster_name  = aws_eks_cluster.main.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSAdminPolicy"
+  principal_arn = var.cluster-access-role-arn
 
-#   access_scope {
-#     type = "cluster"
-#   }
-# }
+  access_scope {
+    type = "cluster"
+  }
+}
 
-# resource "aws_eks_access_policy_association" "pa-cluster-admin" {
-#   cluster_name  = aws_eks_cluster.main.name
-#   policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
-#   principal_arn = var.cluster-access-role-arn
+resource "aws_eks_access_policy_association" "pa-cluster-admin" {
+  cluster_name  = aws_eks_cluster.main.name
+  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  principal_arn = var.cluster-access-role-arn
 
-#   access_scope {
-#     type = "cluster"
-#   }
-# }
+  access_scope {
+    type = "cluster"
+  }
+}

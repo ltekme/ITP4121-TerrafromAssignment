@@ -19,3 +19,6 @@ output "eks-cluster-certificate" {
 output "eks-cluster-auth-token" {
   value = module.eks-cluster.cluster-auth-token
 }
+output "ecr-repository" {
+  value = aws_ecr_repository.simple-app
+}

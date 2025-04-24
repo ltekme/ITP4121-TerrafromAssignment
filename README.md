@@ -6,4 +6,5 @@ To deploy infrastructure individully, use the following steps
 
 ```sh
 terraform apply -target=module.aws-eks-cluster
+terraform apply -target=module.aws-eks-deployment
 ```

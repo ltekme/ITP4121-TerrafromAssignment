@@ -8,7 +8,8 @@ resource "aws_db_instance" "default" {
   username = var.master-username
   password = var.master-password
 
-  availability_zone = var.availability_zone
+  availability_zone   = var.availability_zone
+  publicly_accessible = true
 
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
   db_subnet_group_name   = aws_db_subnet_group.group1.name
