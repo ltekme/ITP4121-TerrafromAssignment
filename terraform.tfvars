@@ -1,1 +1,7 @@
 gcp_project = "the-byway-424002-i1"
+azure-SUB_ID = "2e91053a-a916-4289-84a2-c72b9716812e"
+azure-keyvault_name = "mykeyvault4121ss"
+azure-rgname = "myresourcegroup"
+azure-location = "canadacentral"
+azure-service_principal_name = "myserviceprincipal"
+azure-clustername = "aks-cluster"

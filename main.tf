@@ -14,5 +14,13 @@ terraform {
       source  = "hashicorp/google"
       version = "6.8.0"
     }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.27.0"
+    }
+    azuread = {
+      source = "hashicorp/azuread"
+      version = "~> 3.0.2"
+    }
   }
 }
